@@ -26,7 +26,7 @@ import com.example.algamoney.api.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
-public class PessoaResource {
+public class PessoaResource {	
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
