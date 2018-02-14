@@ -21,6 +21,7 @@ import com.example.algamoney.api.config.property.AlgamoneyApiProperty;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
+
 public class CorsFilter implements Filter{
 	
 	@Autowired
