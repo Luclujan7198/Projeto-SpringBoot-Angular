@@ -18,42 +18,41 @@ import org.springframework.stereotype.Component;
 
 import com.example.algamoney.api.config.property.AlgamoneyApiProperty;
 
-
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class CorsFilter implements Filter{
-	
-	@Autowired
-	private AlgamoneyApiProperty algamoneyApiProperties;
+public class CorsFilter implements Filter {
 
+	@Autowired
+	private AlgamoneyApiProperty algamoneyApiProperty;
+	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse resp = (HttpServletResponse) response;
 		
-		resp.setHeader("Acess-Control-Allow-Origin", algamoneyApiProperties.getOriginPermitida());
-		resp.setHeader("Acess-Control-Allow-Credentials", "true");
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) resp;
 		
-		if("OPTIONS".equals(req.getMethod()) && algamoneyApiProperties.getOriginPermitida().equals(req.getHeader("Origin"))) {
-			resp.setHeader("Acess-Control-Allow-Methods","POST, GET, PUT, DELETE, OPTIONS");
-			resp.setHeader("Acess-Control-Allow-Headers","Authorization, Content-Type, Accept");
-			resp.setHeader("Acess-Control-Max-Age","3600");
+		response.setHeader("Access-Control-Allow-Origin", algamoneyApiProperty.getOriginPermitida());
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+		
+		if ("OPTIONS".equals(request.getMethod()) && algamoneyApiProperty.getOriginPermitida().equals(request.getHeader("Origin"))) {
+			response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
+        	response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+        	response.setHeader("Access-Control-Max-Age", "3600");
 			
-			resp.setStatus(HttpServletResponse.SC_OK);
-		
-		}else {
-			filterChain.doFilter(req, resp);
+			response.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			chain.doFilter(req, resp);
 		}
 		
 	}
-
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {		
-	}
 	
 	@Override
-	public void destroy() {		
+	public void destroy() {
+	}
+
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
 	}
 
 }
